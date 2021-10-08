@@ -40,6 +40,7 @@ static __thread ht_ts_t* clht_ts_thread = NULL;
 void
 clht_gc_thread_init(clht_t* h, int id)
 {
+  if(clht_ts_thread != NULL) return;
   clht_alloc = (ssmem_allocator_t*) malloc(sizeof(ssmem_allocator_t));
   assert(clht_alloc != NULL);
   ssmem_alloc_init_fs_size(clht_alloc, SSMEM_DEFAULT_MEM_SIZE, SSMEM_GC_FREE_SET_SIZE, id);
@@ -251,7 +252,10 @@ clht_gc_destroy(clht_t* hashtable)
 #endif
 
   //  ssmem_alloc_term(clht_alloc);
-  free(clht_alloc);
+  if(clht_alloc){
+    free(clht_alloc);
+    clht_alloc = NULL;
+  }
 }
 
 /* 
