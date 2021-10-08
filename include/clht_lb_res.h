@@ -39,6 +39,8 @@
 
 #include "ssmem.h"
 
+//#define __cplusplus
+
 extern __thread ssmem_allocator_t* clht_alloc;
 
 #define true 1
@@ -142,7 +144,8 @@ extern __thread ssmem_allocator_t* clht_alloc;
 extern int is_power_of_two(unsigned int x);
 
 typedef uintptr_t clht_addr_t;
-typedef volatile uintptr_t clht_val_t;
+//typedef volatile uintptr_t clht_val_t;
+typedef char* clht_val_t;
 
 #if defined(__tile__)
 typedef volatile uint32_t clht_lock_t;
@@ -400,6 +403,10 @@ lock_acq_rtm_chk_resize(clht_lock_t* lock, clht_hashtable_t* h)
 
 /* Create a new hashtable. */
 clht_hashtable_t* clht_hashtable_create(uint64_t num_buckets);
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 clht_t* clht_create(uint64_t num_buckets);
 
 /* Insert a key-value pair into a hashtable. */
@@ -435,6 +442,9 @@ bucket_t* clht_bucket_create();
 int ht_resize_pes(clht_t* hashtable, int is_increase, int by);
 
 const char* clht_type_desc();
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CLHT_RES_RES_H_ */
 
