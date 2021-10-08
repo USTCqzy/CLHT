@@ -6,6 +6,7 @@
 //#define ADD_PADDING
 //#define OPTERON
 //#define OPTERON_OPTIMIZE
+#define XEONR
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -192,6 +193,40 @@ extern "C" {
     10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 
     30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 
   };
+#  else
+  static uint8_t  __attribute__ ((unused)) the_cores[] = {
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+    10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 
+    20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 
+    30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 
+  };
+#  endif
+
+#elif defined(XEONR)
+#  define NUMBER_OF_SOCKETS 4
+#  define CORES_PER_SOCKET 20
+#  define CACHE_LINE_SIZE 64
+#  define NOP_DURATION 2
+
+#  define USE_HYPERTRHEADS 0
+
+#  if USE_HYPERTRHEADS == 0
+  static uint8_t  __attribute__ ((unused)) the_cores[] = {
+    0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,
+    1,5,9,13,17,21,25,29,33,37,41,45,49,53,57,61,65,69,73,77,
+    2,6,10,14,18,22,26,30,34,38,42,46,50,54,58,62,66,70,74,78,
+    3,7,11,15,19,23,27,31,35,39,43,47,51,55,59,63,67,71,75,79,
+  };
+  /*static uint8_t  __attribute__ ((unused)) the_cores[] = {
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
+    10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 
+    20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 
+    30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 
+    40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+    50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+    60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
+    70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+  };*/
 #  else
   static uint8_t  __attribute__ ((unused)) the_cores[] = {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
