@@ -121,7 +121,7 @@ typedef union
   };
 } clht_snapshot_t;
 
-#if __GNUC__ > 4 && __GNUC_MINOR__ > 4
+#if _DEBUG_ && __GNUC__ > 4 && __GNUC_MINOR__ > 4
 _Static_assert (sizeof(clht_snapshot_t) == 8, "sizeof(clht_snapshot_t) == 8");
 #endif
 
@@ -147,7 +147,7 @@ typedef volatile struct ALIGNED(CACHE_LINE_SIZE) bucket_s
   clht_val_t val[KEY_BUCKT];
 } bucket_t;
 
-#if __GNUC__ > 4 && __GNUC_MINOR__ > 4
+#if _DEBUG_ && __GNUC__ > 4 && __GNUC_MINOR__ > 4
 _Static_assert (sizeof(bucket_t) % 64 == 0, "sizeof(bucket_t) == 64");
 #endif
 
@@ -281,6 +281,11 @@ _mm_pause_rep(uint64_t w)
 
 /* Create a new hashtable. */
 clht_hashtable_t* clht_hashtable_create(uint64_t num_buckets);
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 clht_t* clht_create(uint64_t num_buckets);
 
 /* Insert a key-value pair into a hashtable. */
@@ -312,6 +317,10 @@ int ht_resize_pes(clht_t* hashtable, int is_increase, int by);
 void  clht_print_retry_stats();
 
 const char* clht_type_desc();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CLHT_LF_RES_H_ */
 

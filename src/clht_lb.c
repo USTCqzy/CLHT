@@ -216,7 +216,7 @@ clht_get(clht_hashtable_t* hashtable, clht_addr_t key)
   return 0;
 }
 
-inline clht_addr_t
+clht_addr_t
 bucket_exists(bucket_t* bucket, clht_addr_t key)
 {
   uint32_t j;
@@ -481,4 +481,44 @@ clht_print(clht_hashtable_t* hashtable)
       printf("\n");
     }
   fflush(stdout);
+}
+
+void
+clht_clear(clht_hashtable_t* hashtable)
+{
+  uint64_t num_buckets = hashtable->num_buckets;
+  bucket_t* bucket;
+
+  printf("LB Clear number of buckets: %u\n", num_buckets);
+/*
+  memset(hashtable->table, 0, num_buckets * (sizeof(bucket_t)));
+    
+  uint64_t i;
+  for (i = 0; i < num_buckets; i++)
+    {
+      hashtable->table[i].lock = 0;
+      uint32_t j;
+      for (j = 0; j < ENTRIES_PER_BUCKET; j++)
+	{
+	  hashtable->table[i].key[j] = 0;
+	}
+    }
+    */
+  uint64_t bin;
+  for (bin = 0; bin < num_buckets; bin++)
+    {
+      bucket = hashtable->table + bin;
+      
+      uint32_t j;
+      do
+	{
+	  for (j = 0; j < ENTRIES_PER_BUCKET; j++)
+	    {
+              bucket->key[j] = 0;
+	    }
+
+	  bucket = bucket->next;
+	}
+      while (bucket != NULL);
+    }
 }

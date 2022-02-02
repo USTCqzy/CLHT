@@ -337,6 +337,10 @@ _mm_pause_rep(uint64_t w)
 
 /* Create a new hashtable. */
 clht_hashtable_t* clht_hashtable_create(uint64_t num_buckets);
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 clht_t* clht_create(uint64_t num_buckets);
 
 /* Insert a key-value pair into a hashtable. */
@@ -370,6 +374,9 @@ int ht_resize_pes(clht_t* hashtable, int is_increase, int by);
 void  clht_print_retry_stats();
 
 const char* clht_type_desc();
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CLHT_LF_RES_H_ */
 

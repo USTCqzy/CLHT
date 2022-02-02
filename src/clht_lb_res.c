@@ -784,3 +784,44 @@ clht_print(clht_hashtable_t* hashtable)
     }
   fflush(stdout);
 }
+
+void
+clht_clear(clht_hashtable_t* hashtable)
+{
+  uint64_t num_buckets = hashtable->num_buckets;
+  volatile bucket_t* bucket;
+
+  printf("LB_RES Clear number of buckets: %zu\n", num_buckets);
+/*
+  memset(hashtable->table, 0, num_buckets * (sizeof(bucket_t)));
+    
+  uint64_t i;
+  for (i = 0; i < num_buckets; i++)
+    {
+      hashtable->table[i].lock = LOCK_FREE;
+      uint32_t j;
+      for (j = 0; j < ENTRIES_PER_BUCKET; j++)
+	{
+	  hashtable->table[i].key[j] = 0;
+	}
+    }
+    */
+
+  uint64_t bin;
+  for (bin = 0; bin < num_buckets; bin++)
+    {
+      bucket = hashtable->table + bin;
+      
+      uint32_t j;
+      do
+	{
+	  for (j = 0; j < ENTRIES_PER_BUCKET; j++)
+	    {
+              bucket->key[j] = 0;
+	    }
+
+	  bucket = bucket->next;
+	}
+      while (bucket != NULL);
+    }
+}

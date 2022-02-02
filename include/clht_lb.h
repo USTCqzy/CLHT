@@ -175,6 +175,12 @@ _mm_pause_rep(uint64_t w)
 
 /* Create a new hashtable. */
 clht_hashtable_t* clht_hashtable_create(uint64_t num_buckets );
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 clht_t* clht_create(uint64_t num_buckets);
 
 /* Hash a key for a particular hashtable. */
@@ -199,5 +205,10 @@ void clht_print(clht_hashtable_t* hashtable);
 bucket_t* clht_bucket_create();
 
 const char* clht_type_desc();
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif /* _CLHT_LB_H_ */

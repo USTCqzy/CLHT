@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
+#include <emmintrin.h>
 
 #define true 1
 #define false 0
@@ -126,7 +127,7 @@ typedef union
   };
 } clht_snapshot_t;
 
-#if __GNUC__ > 4 && __GNUC_MINOR__ > 4
+#if _DEBUG_ && __GNUC__ > 4 && __GNUC_MINOR__ > 4
 _Static_assert (sizeof(clht_snapshot_t) == 8, "sizeof(clht_snapshot_t) == 8");
 #endif
 
@@ -153,7 +154,7 @@ typedef volatile struct ALIGNED(CACHE_LINE_SIZE) bucket_s
   volatile struct bucket_s* padding;
 } bucket_t;
 
-#if __GNUC__ > 4 && __GNUC_MINOR__ > 4
+#if _DEBUG_ && __GNUC__ > 4 && __GNUC_MINOR__ > 4
 _Static_assert (sizeof(bucket_t) % 64 == 0, "sizeof(bucket_t) == 64");
 #endif
 
@@ -360,6 +361,8 @@ void clht_gc_destroy(clht_t* hashtable);
 
 /* prints the contents of the hash table */
 void clht_print(clht_hashtable_t* hashtable);
+
+void clht_clear(clht_hashtable_t* hashtable);
 
 /* string description of the type of the hash table
  For example, CLHT-LB-RESIZE */

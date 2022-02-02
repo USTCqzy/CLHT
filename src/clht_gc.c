@@ -251,7 +251,11 @@ clht_gc_destroy(clht_t* hashtable)
 #endif
 
   //  ssmem_alloc_term(clht_alloc);
-  free(clht_alloc);
+  // free(clht_alloc);
+  if (clht_alloc) {
+    free(clht_alloc);
+    clht_alloc = NULL;
+  }
 }
 
 /* 

@@ -159,7 +159,7 @@ typedef struct ALIGNED(CACHE_LINE_SIZE) bucket_s
   volatile struct bucket_s* next;
 } bucket_t;
 
-#if __GNUC__ > 4 && __GNUC_MINOR__ > 4
+#if _DEBUG_ && __GNUC__ > 4 && __GNUC_MINOR__ > 4
 _Static_assert (sizeof(bucket_t) % 64 == 0, "sizeof(bucket_t) == 64");
 #endif
 
@@ -400,6 +400,12 @@ lock_acq_rtm_chk_resize(clht_lock_t* lock, clht_hashtable_t* h)
 
 /* Create a new hashtable. */
 clht_hashtable_t* clht_hashtable_create(uint64_t num_buckets);
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 clht_t* clht_create(uint64_t num_buckets);
 
 /* Insert a key-value pair into a hashtable. */
@@ -435,6 +441,10 @@ bucket_t* clht_bucket_create();
 int ht_resize_pes(clht_t* hashtable, int is_increase, int by);
 
 const char* clht_type_desc();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CLHT_RES_RES_H_ */
 
