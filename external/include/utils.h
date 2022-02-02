@@ -6,7 +6,6 @@
 //#define ADD_PADDING
 //#define OPTERON
 //#define OPTERON_OPTIMIZE
-
 #define XEONR
 
 #include <stdlib.h>
